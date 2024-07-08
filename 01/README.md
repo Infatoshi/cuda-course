@@ -1,31 +1,14 @@
 # Chapter 01: The Current Deep Learning Ecosystem
 
 
-<details>
-<summary>Click to expand</summary>
-
-- Item 1
-- Item 2
-- Item 3
-
-You can also include other Markdown elements here, like:
-
-1. Numbered lists
-2. **Bold text**
-3. [Links](https://github.com)
-
-</details>
-
-
-
-
 DISCLAIMER: 
 
 This part doesn’t go over anything highly technical with CUDA. Better to show you the ecosystem rather than enter technical details blindly. From my experience learning this stuff, having a decent enough understanding of the ecosystem will help you map out everything properly, and it provides that initial motivation to learn. 
 
 As we mine further into detail, I encourage you to research and play around with what you find interesting (you will come across cool stuff in this section). If you just listen to someone talk about a subject for 20 hours, you limit your learning. Understanding breadth and depth of deep learning infrastructure is tough to navigate. Getting uncomfortable and breaking things is the best way to learn.
 
-- Research
+<details>
+<summary>Research</summary>
     - PyTorch ( https://www.youtube.com/watch?v=ORMx45xqWkA&t=13s&ab_channel=Fireship)
         - If you’re watching this I assume you have at least some basic knowledge of PyTorch. If not, I suggest watching the PyTorch video by Daniel Bourke (https://www.youtube.com/watch?v=Z_ikDlimN6A)
         - Pytorch comes with nightly and stable versions ⇒ https://discuss.pytorch.org/t/pytorch-nightly-vs-stable/105633
@@ -66,6 +49,8 @@ As we mine further into detail, I encourage you to research and play around with
         - https://www.reddit.com/r/deeplearning/comments/t31ppy/for_what_reason_do_you_or_dont_you_use_pytorch/
         - mostly the boilerplate code reduction and distributed scaling
         - `Trainer()` as opposed to training loop
+
+</details>
 - Production
     - Inference-only
         - vLLM
