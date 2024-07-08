@@ -2,6 +2,8 @@
 
 GitHub Repo for CUDA Course on FreeCodeCamp
 
+> Note: This course is designed for Ubuntu Linux. Windows users can use Windows Subsystem for Linux or Docker containers.
+
 ## Table of Contents
 
 1. [Course Philosophy](#course-philosophy)
@@ -65,7 +67,6 @@ This course aims to:
 - NVIDIA and PyTorch documentation
 - LLMs for navigating the space
 
-> Note: This course is designed for Ubuntu Linux. Windows users can use Windows Subsystem for Linux or Docker containers.
 
 ## TODO
 
