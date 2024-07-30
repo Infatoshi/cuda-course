@@ -4,8 +4,9 @@ GCC = gcc
 NVCC = nvcc
 CUDA_FLAGS = -arch=sm_86
 
-01: 01.c
+01:
 	@$(GCC) -o 01 01.c
+
 
 # just compiles to object file
 01_obj:

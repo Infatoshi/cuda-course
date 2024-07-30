@@ -1,5 +1,8 @@
 // exact same as 02.c
-#include <stdio.h>
+// #include <stdio.h>
+#include <iostream>
+
+using namespace std;
 
 typedef struct {
     float x;
@@ -8,6 +11,6 @@ typedef struct {
 
 int main() {
     Point p = {1.1, 2.5};
-    printf("size of Point: %zu\n", sizeof(Point));  // Output: 8 bytes = 4 bytes (float x) + 4 bytes (float y)
-
+    // printf("size of Point: %zu\n", sizeof(Point));  // Output: 8 bytes = 4 bytes (float x) + 4 bytes (float y)
+    
 }
