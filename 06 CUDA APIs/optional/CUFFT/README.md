@@ -1,0 +1,15 @@
+# Chicken Scratch cuFFT notes (ditched due to math background requirements)
+- cuFFT (primarily for convolutions. also audio preprocessing)
+    - briefly touch on this by scrolling through docs
+    - fftw stands for the fastest fourier transform in the west ([https://www.fftw.org](https://www.fftw.org/)) as a basic FFT cpu C library. cuFFT extends this implementation using everything the same except optimized for the GPU.
+    - convolutions
+        - convolution modes:
+            - full ⇒ `output_size = input_size + kernel_size - 1` (best for conv1d)
+            - valid ⇒ `output_size = input_size - kernel_size + 1` (we like this one the most for conv2d)
+            - same ⇒ `output_size = input_size`
+        - Convolution backward
+        - convolutions w/ CUDA API / manual kernels ⇒ `conv_out = ifft( elementwisemul ( fft(x), fft(w) ) )`
+        - DFT explanation
+            - `[1, -1, 1, -1]` ⇒ the idea with the DFT is that since the number alternate every 2 indices, you find the frequency bin for k = 2 and make it the maximum possible (the number of samples since its perfectly consistent with k = 2). hence why the output is `[0, 0, 4, 0]` . we see 4 because `N = 4`
+            - start with wikipedia definition using practice questions and build from there to show the intuition (https://en.wikipedia.org/wiki/Discrete_Fourier_transform, [https://en.wikipedia.org/wiki/Fast_Fourier_transform#:~:text=A Fast Fourier Transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform#:~:text=A%20Fast%20Fourier%20Transform%20) (FFT,frequency%20domain%20and%20vice%20versa.)
+            - compute the DFT/FFT inverse if the intuition of the original calculation is hard.
