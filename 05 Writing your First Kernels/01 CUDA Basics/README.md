@@ -1,5 +1,9 @@
 # CUDA Basics
 
+## Lets prints out some stats about your GPU
+![](../assets/gpustats.png)
+
+
 ## Easy stuff
 Host ⇒ CPU ⇒ Uses RAM sticks on the motherboard
 

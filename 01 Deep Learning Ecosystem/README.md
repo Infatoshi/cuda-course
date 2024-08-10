@@ -91,7 +91,7 @@ As we mine further into detail, I encourage you to research and play around with
         - No need for error checking / macros `CUDA_CHECK_ERROR`
         - Reduced complexity when grid / block / thread level indexing on kernel launch parameters
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/01477d06-6fe3-44d2-8c24-a00d5784ab50/eabe4fe9-b48a-4979-8691-d0a47b397636/Untitled.png)
+    ![](https://prod-files-secure.s3.us-west-2.amazonaws.com/01477d06-6fe3-44d2-8c24-a00d5784ab50/eabe4fe9-b48a-4979-8691-d0a47b397636/Untitled.png)
     
 - torch.compile
     - Gets more attention than TorchScript and is typically better performance
@@ -109,7 +109,8 @@ As we mine further into detail, I encourage you to research and play around with
     - Supports training and inference
     - Computer vision project started at Facebook (Meta)
     - Detection and segmentation algorithms
-- Low-Level
+
+## Low-Level
     - CUDA
         - Compute unified device architecture (CUDA) can be thought of as a programming language for nvidia gpus.
         - CUDA libs ⇒ cuDNN, cuBLAS, cutlass (fast linear algebra and DL algorithms). cuFFT for fast convolutions (FFTs are covered in the course)
@@ -120,7 +121,8 @@ As we mine further into detail, I encourage you to research and play around with
         - Open Computing Language
         - CPUs, GPUs, digital signal processors, other hardware
         - since NVIDIA designed CUDA, it will outperform OpenCL on Nvidia tasks. If you are doing work with embedded systems (EE/CE), this is still worth learning.
-- Inference for Edge Computing & Embedded Systems
+
+## Inference for Edge Computing & Embedded Systems
     
     Edge Computing refers to low-latency and highly efficient local computing in the context of real-world distributed systems like fleets. Tesla FSD is a prime example of edge computing because it has a neural net running locally on the car. It also has to send data back to Tesla so they can improve their models. 
     
