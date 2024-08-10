@@ -38,6 +38,9 @@ nvcc -o 01 01_vector_addition.cu
 - Host ⇒ 16/32/64GB DRAM depending on your rig (those 4 RAM sticks on the motherboard)
 - Arrays too big to fit into the Register will spill into local memory. our goal is to make sure this doesn’t happen because we want to keep our program running as fast as possible
 
+![](assets/memhierarchy.png)
+
+
 ### What is _random_ access memory?
 
 - in a video tape you have to access the bits sequentially to reach
