@@ -91,7 +91,7 @@ As we mine further into detail, I encourage you to research and play around with
         - No need for error checking / macros `CUDA_CHECK_ERROR`
         - Reduced complexity when grid / block / thread level indexing on kernel launch parameters
     
-    ![](https://prod-files-secure.s3.us-west-2.amazonaws.com/01477d06-6fe3-44d2-8c24-a00d5784ab50/eabe4fe9-b48a-4979-8691-d0a47b397636/Untitled.png)
+![](../05%20Writing%20your%20First%20Kernels/assets/triton1.png)
     
 - torch.compile
     - Gets more attention than TorchScript and is typically better performance
@@ -111,32 +111,32 @@ As we mine further into detail, I encourage you to research and play around with
     - Detection and segmentation algorithms
 
 ## Low-Level
-    - CUDA
-        - Compute unified device architecture (CUDA) can be thought of as a programming language for nvidia gpus.
-        - CUDA libs ⇒ cuDNN, cuBLAS, cutlass (fast linear algebra and DL algorithms). cuFFT for fast convolutions (FFTs are covered in the course)
-        - writing the kernel yourself based on the hardware architecture (Nvidia still does this under the hood for by passing in special flags to the compiler)
-    - ROCm
-        - CUDA equivalent for AMD GPUs
-    - OpenCL
-        - Open Computing Language
-        - CPUs, GPUs, digital signal processors, other hardware
-        - since NVIDIA designed CUDA, it will outperform OpenCL on Nvidia tasks. If you are doing work with embedded systems (EE/CE), this is still worth learning.
+- CUDA
+    - Compute unified device architecture (CUDA) can be thought of as a programming language for nvidia gpus.
+    - CUDA libs ⇒ cuDNN, cuBLAS, cutlass (fast linear algebra and DL algorithms). cuFFT for fast convolutions (FFTs are covered in the course)
+    - writing the kernel yourself based on the hardware architecture (Nvidia still does this under the hood for by passing in special flags to the compiler)
+- ROCm
+    - CUDA equivalent for AMD GPUs
+- OpenCL
+    - Open Computing Language
+    - CPUs, GPUs, digital signal processors, other hardware
+    - since NVIDIA designed CUDA, it will outperform OpenCL on Nvidia tasks. If you are doing work with embedded systems (EE/CE), this is still worth learning.
 
 ## Inference for Edge Computing & Embedded Systems
     
-    Edge Computing refers to low-latency and highly efficient local computing in the context of real-world distributed systems like fleets. Tesla FSD is a prime example of edge computing because it has a neural net running locally on the car. It also has to send data back to Tesla so they can improve their models. 
-    
-    - CoreML
-        - Primarily for deployment of pre-trained models on Apple devices
-        - Optimized for on-device inference
-        - Supports on-device training
-        - Supports a wide range of model types (vision, natural language, speech, etc.)
-        - Integrates well with Apple's ecosystem (iOS, macOS, watchOS, tvOS)
-        - Focuses on privacy by keeping data on-device
-        - Allows model conversion from other frameworks
-        - Designed for app developers to easily incorporate ML into their apps
-    - PyTorch Mobile
-    - TensorFlow Lite
+- Edge Computing refers to low-latency and highly efficient local computing in the context of real-world distributed systems like fleets. Tesla FSD is a prime example of edge computing because it has a neural net running locally on the car. It also has to send data back to Tesla so they can improve their models. 
+
+- CoreML
+    - Primarily for deployment of pre-trained models on Apple devices
+    - Optimized for on-device inference
+    - Supports on-device training
+    - Supports a wide range of model types (vision, natural language, speech, etc.)
+    - Integrates well with Apple's ecosystem (iOS, macOS, watchOS, tvOS)
+    - Focuses on privacy by keeping data on-device
+    - Allows model conversion from other frameworks
+    - Designed for app developers to easily incorporate ML into their apps
+- PyTorch Mobile
+- TensorFlow Lite
 
 ## Easy to Use
 - FastAI
@@ -164,7 +164,7 @@ As we mine further into detail, I encourage you to research and play around with
     onnx.save(onnx_model, 'path/to/save/model.onnx')
     ```
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/01477d06-6fe3-44d2-8c24-a00d5784ab50/22e49fb0-4567-41d5-8371-3af4c0f28c1f/Untitled.png)
+    ![Untitled](assets/onnx.png)
     
 - wandb
     - Short for weights and biases
@@ -172,7 +172,7 @@ As we mine further into detail, I encourage you to research and play around with
     - Team collaboration
     - Compare experiments w/ an intuitive UI
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/01477d06-6fe3-44d2-8c24-a00d5784ab50/dcae91a1-dd1a-44f8-bb71-7749485210c3/Untitled.png)
+    ![Untitled](assets/wandb.png)
         
     
 ## Cloud Providers
@@ -203,7 +203,7 @@ As we mine further into detail, I encourage you to research and play around with
     - Nvidia CUDA Compiler
     - Works on everything in the CUDA toolkit
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/01477d06-6fe3-44d2-8c24-a00d5784ab50/51730e25-8d5d-4ced-8d52-5915fdf4935c/Untitled.png)
+    ![Untitled](../10%20Extras/assets/nvcc.png)
         
 ## Misc
 - Huggingface
