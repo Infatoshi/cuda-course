@@ -21,6 +21,11 @@
 - `compute-sanitizer ./main` for memory leaks
 - kernel performance UI ⇒ ncu-ui (might have to `sudo apt install libxcb-cursor0`)
 
+## Kernel Profiling
+- [Nsight Compute Kernel Profiling](https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html)
+- `ncu --kernel-name matrixMulKernelOptimized --launch-skip 0 --launch-count 1 --section Occupancy "./nvtx_matmul"`
+- turns out nvidia profiling tools won't give you everything you need to optimize deep learning kernels: [Here](https://stackoverflow.com/questions/2204527/how-do-you-profile-optimize-cuda-kernels)
+
 ## Profiling Vector Addition
 - when profiling the following 3 variants with a 32 (2^25) million element vector addition
     - basic without blocks OR threads
@@ -31,6 +36,7 @@
     - ![](../assets/prof3.png)
 - originally from: https://developer.nvidia.com/blog/even-easier-introduction-cuda/
 
+
 ## NVTX `nvtx` profiling
 ```bash
 # Compile the code
@@ -40,7 +46,6 @@ nvcc -o matmul matmul.cu -lnvToolsExt
 nsys profile --stats=true ./matmul
 ```
 - `nsys stats report.qdrep` to see the stats
-
 
 
 ## CUPTI

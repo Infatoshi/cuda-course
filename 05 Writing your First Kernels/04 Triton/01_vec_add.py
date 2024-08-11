@@ -40,7 +40,7 @@ def add(x: torch.Tensor, y: torch.Tensor):
     # The SPMD launch grid denotes the number of kernel instances that run in parallel.
     # It is analogous to CUDA launch grids. It can be either Tuple[int], or Callable(metaparameters) -> Tuple[int].
     # In this case, we use a 1D grid where the size is the number of blocks:
-    grid = lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']), )
+    grid = lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']), ) # ceiling division (n_elements / BLOCK_SIZE)
     # NOTE:
     #  - Each torch.tensor object is implicitly converted into a pointer to its first element.
     #  - `triton.jit`'ed functions can be indexed with a launch grid to obtain a callable GPU kernel.
@@ -55,38 +55,6 @@ size = 2**25
 x = torch.rand(size, device='cuda')
 y = torch.rand(size, device='cuda')
 
-# warmup_runs = 3
-# benchmark_runs = 100
-# torch_avg_time = 0
-# triton_avg_time = 0
-
-# # torch speed test
-# for i in range(warmup_runs):
-#     output_torch = x + y
-
-# start = time.time()
-# for i in range(benchmark_runs):
-#     output_torch = x + y
-# end = time.time()
-
-# torch_avg_time = (end - start) / benchmark_runs
-
-# # triton speed test
-# for i in range(warmup_runs):
-#     output_torch = x + y
-
-# start = time.time()
-# for i in range(benchmark_runs):
-#     output_triton = add(x, y)
-# end = time.time()
-
-# triton_avg_time = (end - start) / benchmark_runs
-
-# print(f'Torch average time: {torch_avg_time * 1e3} ms')
-# print(f'Triton average time: {triton_avg_time * 1e3} ms')
-
-# print(f'The maximum difference between torch and triton is '
-#       f'{torch.max(torch.abs(output_torch - output_triton))}')
 
 @triton.testing.perf_report(
     triton.testing.Benchmark(

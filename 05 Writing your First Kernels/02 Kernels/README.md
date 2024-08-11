@@ -66,32 +66,15 @@ int blockDim = 32; // 32 threads per block
 - if you are wondering about calling multiple GPU kernels with different CPU threads,
   refer to the link above.
 
-## SIMT (Single Instruction, Multiple Threads)
+## SIMD/SIMT (Single Instruction, Multiple Threads)
 
-- - similar to CPU SIMD (single instruction multiple data), we have single instruction multiple thread on GPU.
+- [Can CUDA use SIMD instructions?](https://stackoverflow.com/questions/5238743/can-cuda-use-simd-extensions)
+- similar to CPU SIMD (single instruction multiple data), we have single instruction multiple thread on GPU.
 - Instead of running the for loop sequentially, each thread can run a single iteration of the for loop so that it appears to only take the time of one iteration. it can grow linearly if you add more and more iterations as you would expect (not enough cores to parallel process all the independent iterations of the for loop)
 - Simpler than CPU
   - in-order instruction issue
   - no branch prediction
   - significantly less control than CPU architecture gives us more room for more CORES
-
-In CUDA, threads are organized into groups called warps, typically consisting of 32 threads that execute in lockstep. These warp-level operations allow for efficient SIMD-style computations across the threads in a warp. Some examples of these warp-level primitives include:
-
-- \_`_shfl()` (Shuffle): Allows threads within a warp to directly read each other's registers.
-
-- `__ballot()`: Performs a ballot operation across a warp, where each thread contributes a single bit.
-
-- `__any()`, `__all()`: Performs a logical OR or AND operation across all threads in a warp.
-
-- `__reduce_add()`, `__reduce_min()`, `__reduce_max()`: Performs reduction operations across a warp.
-
-- `__match_any()`, `__match_all()`: Performs value matching across threads in a warp.
-
-- `__syncwarp()`: Synchronizes threads within a warp.
-
-- `__activemask()`: Returns a mask of active threads in a warp.
-
-- and more...
 
 > Later on in the course (matmul optimization chapter), we will come back to optimzations connected to these special warp ops.
 > ![Warp Level Primitives](https://developer.nvidia.com/blog/using-cuda-warp-level-primitives/)

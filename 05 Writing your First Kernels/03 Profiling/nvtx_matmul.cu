@@ -2,7 +2,7 @@
 #include <nvtx3/nvToolsExt.h>
 #include <iostream>
 
-#define BLOCK_SIZE 32
+#define BLOCK_SIZE 16
 
 __global__ void matrixMulKernel(float* A, float* B, float* C, int N) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
