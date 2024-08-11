@@ -21,3 +21,13 @@
     - This technique is often called "double buffering" or "multi-buffering" when extended to more buffers.
 
 ![](assets/async.png)
+
+## Memory Architectures
+- DRAM/VRAM cells are the smallest unit of memory in a computer. They are made up of capacitors and transistors that store bits of data. The capacitors store the bits as electrical charges, and the transistors control the flow of electricity to read and write the data.
+- ![](assets/dram-cell.png)
+- SRAM (shared memory) is a type of memory that is faster and more expensive than DRAM. It is used for cache memory in CPUs and GPUs because it can be accessed more quickly than DRAM. 
+- Modern NVIDIA GPUs likely use 6T (six-transistor) or 8T SRAM cells for most on-chip memory.
+6T cells are compact and offer good performance, while 8T cells can provide better stability and lower power consumption at the cost of larger area.
+- 6T vs 8T SRAM cells in NVIDIA GPUs across different architectures and compute capabilities isn't publicly disclosed in detail. NVIDIA, like most semiconductor companies, keeps many of these low-level design choices proprietary.
+- ![](assets/sram-cell.png)
+- ![](assets/8t-sram-cell.png)

@@ -6,14 +6,16 @@ GitHub Repo for CUDA Course on FreeCodeCamp
 
 ## Table of Contents
 
-1. [Course Philosophy](#course-philosophy)
-2. [Overview](#overview)
-3. [Prerequisites](#prerequisites)
-4. [Course Structure](#course-structure)
-5. [Key Takeaways](#key-takeaways)
-6. [Hardware Requirements](#hardware-requirements)
-7. [Use Cases for CUDA/GPU Programming](#use-cases-for-cudagpu-programming)
-8. [Resources](#resources)
+1. [The Deep Learning Ecosystem](01_Deep_Learning_Ecosystem/README.md)
+2. [Setup/Installation](02_Setup/README.md)
+3. [C/C++ Review](03_C_and_C++_Review/README.md)
+4. [Gentle Intro to GPUs](04_Gentle_Intro_to_GPUs/README.md)
+5. [Writing Your First Kernels](05_Writing_your_First_Kernels/README.md)
+6. [CUDA APIs (cuBLAS, cuDNN, etc)](06_CUDA_APIs/README.md)
+7. [Optimizing Matrix Multiplication](07_Faster_Matmul/README.md)
+8. [PyTorch Extensions (CUDA)](08_PyTorch_Extensions/README.md)
+9. [Final Project](09_Final_Project/README.md)
+10. [Extras](10_Extras/README.md)
 
 ## Course Philosophy
 
