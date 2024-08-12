@@ -51,3 +51,4 @@ If you’re trying to just figure out how to get the fastest possible inference 
 - cuDNN implicitly supports matmul through specific convolution and deep learning operations but isn't presented as one of the main features of cuDNN
 - You'll be best off using the deep learning linear algebra operations in cuBLAS for matrix multiplication since it has wider coverage and is tuned for high throughput matmul
 > Side notes (present to show that its not that hard to transfer knowledge of, say, cuDNN to cuFFT with the way you configure and call an operation)
+
