@@ -16,7 +16,7 @@ def softmax_kernel(
 
     # Load the row into SRAM
     row = tl.load(row_start_ptr + tl.arange(0, BLOCK_SIZE), mask=tl.arange(0, BLOCK_SIZE) < n_cols, other=-float('inf'))
-    
+
     # Compute max for numerical stability
     row_max = tl.max(row, axis=0)
     
@@ -51,8 +51,8 @@ def triton_softmax(x):
 
 # Set up the input tensor
 torch.manual_seed(0)
-# x = torch.randn(10, 1000, device='cuda')
-x = torch.tensor([[1.0, 2.0, 3.0]], device='cuda')
+x = torch.randn(10, 1000, device='cuda')
+# x = torch.tensor([[1.0, 2.0, 3.0]], device='cuda')
 # Compute softmax using PyTorch
 torch_result = torch.softmax(x, dim=1)
 
