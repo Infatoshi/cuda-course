@@ -1,5 +1,6 @@
 #include <cuda_runtime.h>
 #include <stdio.h>
+#include <iostream>
 
 #define CHECK_CUDA_ERROR(val) check((val), #val, __FILE__, __LINE__)
 template <typename T>
@@ -34,6 +35,7 @@ int main(void) {
     float *h_data, *d_data;
     cudaStream_t stream1, stream2;
     cudaEvent_t event;
+    std::cout << event << std::endl;
 
     // Allocate host and device memory
     CHECK_CUDA_ERROR(cudaMallocHost(&h_data, size));  // Pinned memory for faster transfers

@@ -65,7 +65,36 @@ cudaMallocHost((void**)&h_data, size);
 ```
 
 ## Events
+- Measuring kernel execution time: Events are placed before and after kernel launches to measure execution time accurately.
+
+- Synchronizing between streams: Events can be used to create dependencies between different streams, ensuring one operation starts only after another has completed.
+
+- Overlapping computation and data transfer: Events can mark the completion of a data transfer, signaling that computation can begin on that data.
+
+
+```cpp
+cudaEvent_t start, stop;
+cudaEventCreate(&start);
+cudaEventCreate(&stop);
+
+cudaEventRecord(start, stream);
+kernel<<<grid, block, 0, stream>>>(args);
+cudaEventRecord(stop, stream);
+
+cudaEventSynchronize(stop);
+float milliseconds = 0;
+cudaEventElapsedTime(&milliseconds, start, stop);
+```
 
 ## Callbacks
 -  By using callbacks, you can set up a pipeline where the completion of one operation on the GPU triggers the start of another operation on the CPU, which might then queue more work for the GPU. (as seen in the nvidia concurrency docs above)
 
+```cpp
+void CUDART_CB MyCallback(cudaStream_t stream, cudaError_t status, void *userData) {
+    printf("GPU operation completed\n");
+    // Trigger next batch of work
+}
+
+kernel<<<grid, block, 0, stream>>>(args);
+cudaStreamAddCallback(stream, MyCallback, nullptr, 0);
+```
