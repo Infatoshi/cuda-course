@@ -13,9 +13,10 @@ GitHub Repo for CUDA Course on FreeCodeCamp
 5. [Writing Your First Kernels](05_Writing_your_First_Kernels/README.md)
 6. [CUDA APIs (cuBLAS, cuDNN, etc)](06_CUDA_APIs/README.md)
 7. [Optimizing Matrix Multiplication](07_Faster_Matmul/README.md)
-8. [PyTorch Extensions (CUDA)](08_PyTorch_Extensions/README.md)
-9. [Final Project](09_Final_Project/README.md)
-10. [Extras](10_Extras/README.md)
+8. [Triton](08_Triton/README.md)
+9. [PyTorch Extensions (CUDA)](08_PyTorch_Extensions/README.md)
+10. [Final Project](09_Final_Project/README.md)
+11. [Extras](10_Extras/README.md)
 
 ## Course Philosophy
 
@@ -30,9 +31,8 @@ This course aims to:
 - Focus on GPU kernel optimization for performance improvement
 - Cover CUDA, PyTorch, and Triton
 - Emphasis on technical details of writing faster kernels
-- Brief introduction to deployment in the deep learning ecosystem
 - Tailored for NVIDIA GPUs
-- Culminates in a simple CNN project in CUDA
+- Culminates in a simple MLP MNIST project in CUDA
 
 ## Prerequisites
 
@@ -99,4 +99,3 @@ This course aims to:
 - [LinkedIn](https://www.linkedin.com/in/elliot-arledge-a392b7243/)
 - [YouTube](https://www.youtube.com/channel/UCjlt_l6MIdxi4KoxuMjhYxg)
 - [Discord](https://discord.gg/JTTcFe7Pw2)
-

@@ -31,7 +31,7 @@ int blockDim = 32; // 32 threads per block
   - Dg (dim3) specifies the dimension and size of the grid.
   - Db (dim3) specifies the dimension and size of each block
   - Ns (size_t) specifies the number of bytes in shared memory that is dynamically allocated per block for this call in addition to the statically allocated memory. (typically omitted)
-  - S (cudaStream_t) specifies the associated stream, is an optional parameter which defaults to 0. (typically omitted)
+  - S (cudaStream_t) specifies the associated stream, is an optional parameter which defaults to 0.
 
 > source -> https://stackoverflow.com/questions/26770123/understanding-this-cuda-kernels-launch-parameters
 
