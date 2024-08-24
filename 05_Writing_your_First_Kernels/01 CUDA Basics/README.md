@@ -1,6 +1,6 @@
 # CUDA Basics
 
-## Lets prints out some stats about your GPU
+## Lets print out some stats about your GPU
 ![](../assets/gpustats.png)
 
 

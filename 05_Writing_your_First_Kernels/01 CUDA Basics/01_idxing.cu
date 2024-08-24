@@ -26,7 +26,8 @@ __global__ void whoami(void) {
 
 int main(int argc, char **argv) {
     const int b_x = 2, b_y = 3, b_z = 4;
-    const int t_x = 2, t_y = 2, t_z = 2;
+    const int t_x = 4, t_y = 4, t_z = 4; // the max warp size implicitly is 32, so 
+    // we will get 2 warp of 32 threads per block
 
     int blocks_per_grid = b_x * b_y * b_z;
     int threads_per_block = t_x * t_y * t_z;
@@ -35,8 +36,11 @@ int main(int argc, char **argv) {
     printf("%d threads/block\n", threads_per_block);
     printf("%d total threads\n", blocks_per_grid * threads_per_block);
 
-    dim3 blocksPerGrid(b_x, b_y, b_z);
-    dim3 threadsPerBlock(t_x, t_y, t_z);
+    dim3 blocksPerGrid(b_x, b_y, b_z); // 3d cube of shape 2*3*4 = 24
+    dim3 threadsPerBlock(t_x, t_y, t_z); // 3d cube of shape 2*2*2 = 8
+    // total threads in the grid = 24 * 8 = 192
+
+    // we will see 0-191 printed in the console where the threads are grouped into "warps"
 
     whoami<<<blocksPerGrid, threadsPerBlock>>>();
     cudaDeviceSynchronize();
