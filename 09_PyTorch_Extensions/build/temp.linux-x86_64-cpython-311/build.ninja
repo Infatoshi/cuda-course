@@ -1,0 +1,33 @@
+ninja_required_version = 1.3
+cxx = c++
+nvcc = /usr/local/cuda/bin/nvcc
+
+cflags = -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/home/elliot/.pyenv/versions/3.11.7/lib/python3.11/site-packages/torch/include -I/home/elliot/.pyenv/versions/3.11.7/lib/python3.11/site-packages/torch/include/torch/csrc/api/include -I/home/elliot/.pyenv/versions/3.11.7/lib/python3.11/site-packages/torch/include/TH -I/home/elliot/.pyenv/versions/3.11.7/lib/python3.11/site-packages/torch/include/THC -I/usr/local/cuda/include -I/home/elliot/.pyenv/versions/3.11.7/include/python3.11 -c
+post_cflags = -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=polynomial_cpp -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++17
+cuda_cflags = -I/home/elliot/.pyenv/versions/3.11.7/lib/python3.11/site-packages/torch/include -I/home/elliot/.pyenv/versions/3.11.7/lib/python3.11/site-packages/torch/include/torch/csrc/api/include -I/home/elliot/.pyenv/versions/3.11.7/lib/python3.11/site-packages/torch/include/TH -I/home/elliot/.pyenv/versions/3.11.7/lib/python3.11/site-packages/torch/include/THC -I/usr/local/cuda/include -I/home/elliot/.pyenv/versions/3.11.7/include/python3.11 -c
+cuda_post_cflags = -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"'' -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=polynomial_cpp -D_GLIBCXX_USE_CXX11_ABI=0 -gencode=arch=compute_86,code=compute_86 -gencode=arch=compute_86,code=sm_86 -std=c++17
+cuda_dlink_post_cflags = 
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+rule cuda_compile
+  depfile = $out.d
+  deps = gcc
+  command = $nvcc --generate-dependencies-with-compile --dependency-output $out.d $cuda_cflags -c $in -o $out $cuda_post_cflags
+
+
+
+
+
+build /mnt/d/CUDA/cuda-course/09_PyTorch_Extensions/build/temp.linux-x86_64-cpython-311/polynomial.o: compile /mnt/d/CUDA/cuda-course/09_PyTorch_Extensions/polynomial.cpp
+build /mnt/d/CUDA/cuda-course/09_PyTorch_Extensions/build/temp.linux-x86_64-cpython-311/polynomial.o: cuda_compile /mnt/d/CUDA/cuda-course/09_PyTorch_Extensions/polynomial.cu
+
+
+
+
+
+

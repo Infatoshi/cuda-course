@@ -38,3 +38,10 @@ The cuBLASDx library (preview) is a device side API extension for performing BLA
 
 - You can access cuBLASDx documentation [here](https://docs.nvidia.com/cuda/cublasdx).
 - cuBLASDx is not a part of the CUDA Toolkit. You can download cuBLASDx separately from [here](https://developer.nvidia.com/cublasdx-downloads).
+
+## CUTLASS
+- cuBLAS and its variants are run on the host, and whatever comes with cuBLAS-DX isn't super well documented or optimized. 
+- matrix multiplication is the most important operation in deep learning, and cuBLAS doesn't let us easily fuse operations together. 
+- [CUTLASS](https://github.com/NVIDIA/cutlass) (CUDA Templates for Linear Algebra Subroutines) on the other hand (also covered in the optional section) lets us do this.
+- FYI, no, flash attention is not using CUTLASS, just optimized CUDA kernels (read below)
+![](../assets/flashattn.png) -> src: https://arxiv.org/pdf/2205.14135
