@@ -8,6 +8,8 @@
 > Autotuning (grid search for the most optimal parameters for your kernel based on the your GPU architecture)
 > cuBLAS (NVIDIA's closed source library for linear algebra operations like Matmul)
 
+**I was too lazy to write this so lets jump over to Simon Boehm's [blog](https://siboehm.com/articles/22/CUDA-MMM) & [git repo](https://github.com/siboehm/SGEMM_CUDA)**
+
 ## Row Major vs Column Major
 - cuBLAS expects matrices to be in column major format so we have to transpose beforehand
 - Row Major: `A[i][j]` is stored in `A[i * N + j]`
