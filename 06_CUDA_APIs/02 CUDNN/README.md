@@ -5,7 +5,7 @@ you technically don’t need cuFFT or a ton of manually written custom kernels t
 NVIDIA cuDNN provides highly tuned implementations of operations arising frequently in deep learning applications:
 
 - Convolution forward and backward including cross-correlation
-- Matrix multiplication
+- GEMM (general matrix multiply)
 - Pooling forward and backward
 - Softmax forward and backward
 - Neuron activations forward and backward: relu, tanh, sigmoid, elu, gelu, softplus, swishArithmetic, mathematical, relational, and logical pointwise operations (including various flavors of forward and backward neuron activations)
@@ -57,7 +57,7 @@ tensor([[[-1.7182,  1.2014, -0.0144],
          [-0.7630, -0.8169,  0.6805]]])
 ```
 
-as a pytorch reference. but want you allocate memory its just a `<vector>` of int/floats. 
+as a pytorch reference. but want you allocate memory its just an array of int/floats. 
 
 ```python
 [-1.7182,  1.2014, -0.0144, -0.6332, -0.5842, -0.7202,  0.6992, -0.9595,
@@ -102,9 +102,33 @@ With runtime fusion, the above operations could be combined into a single kernel
 
 you will have to check the compute compatibility of your GPU to see which of these operations will fuse
 
-1. Graph API -> Kernel Fusion
+1. Graph API -> Kernel Fusion where nodes are "operations" and edges are "tensors"
 2. Ops API -> Single Operation Engine (softmax, batchnorm, dropout, etc)
 3. CNN API -> Convolution and related operations (depended on by Graph API)
 4. Adversarial API -> "Other" features and algos (RNNs, CTC loss, multihead attn, etc)
 
-> Side note.. ensure we have notes on all the sub APIs within cuDNN
+## Performance Benchmarking
+- say you want to find the fastest cudnn convolution forward algorithm for your use case
+you would look at the different algorithms from algorithm type (something like `CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM`)
+and compare the performance of each algorithm. 
+- sometimes, you can get better performance by writing your own kernel instead of relying on cuDNN.
+- looking back at the cudnn graph API, you can implement your own "graph" of operations and fuse them together resulting in a speedup for a certain chunk of the fwd/bkwd pass.
+- if you're not batch processing, you might get away with writing your own optimized custom kernel (production cases)
+
+## Navigating the cuDNN API
+- just ctrl+click or cmd+click on the function names to see the source code (ex: `cudnnConvolutionForward`)
+```cpp
+cudnnConvolutionForward(cudnnHandle_t handle,
+                        const void *alpha,
+                        const cudnnTensorDescriptor_t xDesc,
+                        const void *x,
+                        const cudnnFilterDescriptor_t wDesc,
+                        const void *w,
+                        const cudnnConvolutionDescriptor_t convDesc,
+                        cudnnConvolutionFwdAlgo_t algo,
+                        void *workSpace,
+                        size_t workSpaceSizeInBytes,
+                        const void *beta,
+                        const cudnnTensorDescriptor_t yDesc,
+                        void *y);
+```
