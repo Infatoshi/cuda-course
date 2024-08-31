@@ -1,9 +1,31 @@
 # How to Profile your CUDA kernels
 
+## Follow along
+1. 
+```bash
+nvcc -o 00 00\ nvtx_matmul.cu -lnvToolsExt
+nsys profile --stats=true ./00
+```
+
+> for these two, you'd open `ncu` on linux and drag and drop the .nsys-rep file into the left sidebar.
+> the .sqlite file can be plugged directly into sqlite DBs for more customized analysis
+2. 
+```bash
+nvcc -o 01 01_naive_matmul.cu`
+nsys profile --stats=true ./01
+```
+
+3. 
+```bash
+nvcc -o 02 02_tiled_matmul.cu
+nsys profile --stats=true ./02
+```
+
 ## CLI tools
 - some cli tools to visualize GPU resource usage & utilization
 - `nvitop`
 - `nvidia-smi` or `watch -n 0.1 nvidia-smi`
+
 
 # Nsight systems & compute
 - nvprof is deprecated so we will be using `nsys` and `ncu` instead

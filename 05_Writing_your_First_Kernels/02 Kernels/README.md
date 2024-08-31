@@ -20,9 +20,9 @@ int blockDim = 32; // 32 threads per block
 // these aren't dim3 types but they are still valid if the indexing scheme is 1D
 ```
 
-- gridDim ⇒ gridDim.x _ gridDim.y _ gridDim.z = # of blocks being launched
+- gridDim ⇒ gridDim.x * gridDim.y * gridDim.z = # of blocks being launched
 
-- blockDim ⇒ blockDim.x _ blockDim.y _ blockDim.z = # of threads per block
+- blockDim ⇒ blockDim.x * blockDim.y * blockDim.z = # of threads per block
 
 - total threads = (threads per block) \* # of blocks
 
@@ -40,6 +40,8 @@ int blockDim = 32; // 32 threads per block
 - `cudaDeviceSynchronize();` ⇒ makes sure all the kernel for one problem are caught up so you can safely begin the next. Think of this as a barrier. Called from your `int main() {}` or another non`__global__` function.
 
 - `__syncthreads();` to put a barrier for thread execution **inside** the kernel. useful if you are messing with the same memory spots and needs all the other jobs to catch up before you start making edits to a certain place. for example: one worker might be halfway done doing stuff to a place in memory. another worker might already be done the job task that the first worker is still doing. if this faster worker messes with a piece of memory that the slower worker still needs, you can get numerical instability and errors.
+
+- `__syncwarps();` sync all threads within a warp
 
 - why do we even need to synchronize threads? because threads are asynchronous and can be executed in any order. if you have a thread that is dependent on another thread, you need to make sure that the thread that is dependent on the other thread is not executed before the other thread is done.
 

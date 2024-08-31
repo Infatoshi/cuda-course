@@ -1,49 +1,30 @@
 import torch
 import torch.nn as nn
-import triton
-import triton.language as tl
-from torch.utils.cpp_extension import load
 import time
+import polynomial_cuda  # This assumes you've built the extension using setup.py
 
-# PyTorch built-in implementation
-class PolynomialActivation(nn.Module):
-    def forward(self, x):
-        return x**2 + x + 1
-
-# Load CUDA extension
-cuda_extension = load(
-    name="polynomial_cuda",
-    sources=["polynomial_cuda.cpp", "polynomial_cuda_kernel.cu"],
-    verbose=True
-)
-
-# Triton implementation
-@triton.jit
-def polynomial_kernel(
-    x_ptr,
-    output_ptr,
-    n_elements,
-    BLOCK_SIZE: tl.constexpr,
-):
-    pid = tl.program_id(axis=0)
-    block_start = pid * BLOCK_SIZE
-    offsets = block_start + tl.arange(0, BLOCK_SIZE)
-    mask = offsets < n_elements
-    x = tl.load(x_ptr + offsets, mask=mask)
-    output = x * x + x + 1
-    tl.store(output_ptr + offsets, output, mask=mask)
-
-class TritonPolynomialActivation(torch.autograd.Function):
+class CUDAPolynomialActivation(torch.autograd.Function):
     @staticmethod
     def forward(ctx, x):
-        output = torch.empty_like(x)
-        grid = (triton.cdiv(x.numel(), 1024),)
-        polynomial_kernel[grid](x, output, x.numel(), 1024)
-        return output
+        return polynomial_cuda.polynomial_activation(x)
 
     @staticmethod
     def backward(ctx, grad_output):
+        # Implement backward pass if needed
         raise NotImplementedError("Backward pass not implemented")
+
+class PolynomialActivation(nn.Module):
+    def __init__(self, implementation='pytorch'):
+        super().__init__()
+        self.implementation = implementation
+
+    def forward(self, x):
+        if self.implementation == 'pytorch':
+            return x**2 + x + 1
+        elif self.implementation == 'cuda':
+            return CUDAPolynomialActivation.apply(x)
+        else:
+            raise ValueError(f"Unknown implementation: {self.implementation}")
 
 # Benchmark function
 def benchmark(func, x, name, num_runs=1000):
@@ -59,19 +40,17 @@ def main():
     torch.manual_seed(0)
     x = torch.randn(1000000, device='cuda')
 
-    # PyTorch built-in
-    pytorch_activation = PolynomialActivation().cuda()
+    pytorch_activation = PolynomialActivation(implementation='pytorch').cuda()
+    cuda_activation = PolynomialActivation(implementation='cuda').cuda()
+
+    out = cuda_activation.forward(x)
+    print(out)
+
     pytorch_time = benchmark(pytorch_activation, x, "PyTorch built-in")
-
-    # CUDA extension
-    cuda_time = benchmark(cuda_extension.polynomial_activation, x, "CUDA extension")
-
-    # Triton
-    triton_time = benchmark(TritonPolynomialActivation.apply, x, "Triton")
+    cuda_time = benchmark(cuda_activation, x, "CUDA extension")
 
     print(pytorch_time)
     print(cuda_time)
-    print(triton_time)
 
 if __name__ == "__main__":
     main()

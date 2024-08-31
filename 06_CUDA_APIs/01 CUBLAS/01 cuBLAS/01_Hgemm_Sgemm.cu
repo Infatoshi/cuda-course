@@ -63,6 +63,22 @@ int main() {
     CHECK_CUDA(cudaMemcpy(d_A, A, M * K * sizeof(float), cudaMemcpyHostToDevice));
     CHECK_CUDA(cudaMemcpy(d_B, B, K * N * sizeof(float), cudaMemcpyHostToDevice));
 
+    // row major A = 
+    // 1.0 2.0 3.0 4.0
+    // 5.0 6.0 7.0 8.0
+
+    // col major A = 
+    // 1.0 5.0
+    // 2.0 6.0
+    // 3.0 7.0
+    // 4.0 8.0
+
+    // memory layout (row)
+    // 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0
+
+    // memory layout (col)
+    // 1.0 5.0 2.0 6.0 3.0 7.0 4.0 8.0
+    
     // cuBLAS SGEMM
     float alpha = 1.0f, beta = 0.0f;
     CHECK_CUBLAS(cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, M, K, &alpha, d_B, N, d_A, K, &beta, d_C, N));

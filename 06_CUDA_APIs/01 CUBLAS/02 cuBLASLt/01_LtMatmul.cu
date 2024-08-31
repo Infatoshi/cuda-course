@@ -105,15 +105,15 @@ int main() {
 
     // Set up matrix descriptors for FP32
     cublasLtMatrixLayout_t matA_fp32, matB_fp32, matC_fp32;
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matA_fp32, CUDA_R_32F, M, K, K));
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matB_fp32, CUDA_R_32F, K, N, N));
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matC_fp32, CUDA_R_32F, M, N, N));
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matA_fp32, CUDA_R_32F, K, M, K));
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matB_fp32, CUDA_R_32F, N, K, N));
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matC_fp32, CUDA_R_32F, N, M, N));
 
     // Set up matrix descriptors for FP16
     cublasLtMatrixLayout_t matA_fp16, matB_fp16, matC_fp16;
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matA_fp16, CUDA_R_16F, M, K, K));
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matB_fp16, CUDA_R_16F, K, N, N));
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matC_fp16, CUDA_R_16F, M, N, N));
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matA_fp16, CUDA_R_16F, K, M, K)); // original MKK
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matB_fp16, CUDA_R_16F, N, K, N)); // original KNN
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&matC_fp16, CUDA_R_16F, N, M, N)); // original MNN
 
     // Set up matrix multiplication descriptor for FP32
     cublasLtMatmulDesc_t matmulDesc_fp32;
@@ -121,7 +121,7 @@ int main() {
 
     // Set up matrix multiplication descriptor for FP16
     cublasLtMatmulDesc_t matmulDesc_fp16;
-    CHECK_CUBLAS(cublasLtMatmulDescCreate(&matmulDesc_fp16, CUBLAS_COMPUTE_32F, CUDA_R_32F));
+    CHECK_CUBLAS(cublasLtMatmulDescCreate(&matmulDesc_fp16, CUBLAS_COMPUTE_16F, CUDA_R_16F));
 
     // Set matrix operation for A and B
     cublasOperation_t transa = CUBLAS_OP_N;
@@ -138,8 +138,12 @@ int main() {
     // Perform matrix multiplication using cublasLtMatmul (FP32)
     CHECK_CUBLAS(cublasLtMatmul(handle, matmulDesc_fp32, &alpha, d_B_fp32, matB_fp32, d_A_fp32, matA_fp32, &beta, d_C_fp32, matC_fp32, d_C_fp32, matC_fp32, nullptr, nullptr, 0, 0));
 
+    // half alpha and beta
+    const half alpha_half = __float2half(1.0f);
+    const half beta_half = __float2half(0.0f);
+    
     // Perform matrix multiplication using cublasLtMatmul (FP16)
-    CHECK_CUBLAS(cublasLtMatmul(handle, matmulDesc_fp16, &alpha, d_B_fp16, matB_fp16, d_A_fp16, matA_fp16, &beta, d_C_fp16, matC_fp16, d_C_fp16, matC_fp16, nullptr, nullptr, 0, 0));
+    CHECK_CUBLAS(cublasLtMatmul(handle, matmulDesc_fp16, &alpha_half, d_B_fp16, matB_fp16, d_A_fp16, matA_fp16, &beta_half, d_C_fp16, matC_fp16, d_C_fp16, matC_fp16, nullptr, nullptr, 0, 0));
 
     // Copy results back to host
     CHECK_CUDA(cudaMemcpy(h_C_gpu_fp32, d_C_fp32, M * N * sizeof(float), cudaMemcpyDeviceToHost));

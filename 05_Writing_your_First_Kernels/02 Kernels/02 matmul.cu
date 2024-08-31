@@ -3,16 +3,35 @@
 #include <time.h>
 #include <cuda_runtime.h>
 
-#define N 1024  // Matrix size (N x N)
+#define M 256  // Number of rows in A and C
+#define K 512   // Number of columns in A and rows in B
+#define N 256  // Number of columns in B and C
 #define BLOCK_SIZE 32
 
+// Example 3x2 @ 2x4 = 3x4 -> (M x K) @ (K x N) = (M x N)
+// A = [[1, 2], 
+//      [3, 4], 
+//      [5, 6]]
+
+// B = [[7, 8, 9, 10],
+//      [11, 12, 13, 14]]
+
+// C = A * B = [[1*7 + 2*11, 1*8 + 2*12, 1*9 + 2*13, 1*10 + 2*14],
+//              [3*7 + 4*11, 3*8 + 4*12, 3*9 + 4*13, 3*10 + 4*14],
+//              [5*7 + 6*11, 5*8 + 6*12, 5*9 + 6*13, 5*10 + 6*14]]
+
+// C = [[29, 32, 35, 38],
+//      [65, 72, 79, 86],
+//      [101, 112, 123, 134]]
+
+
 // CPU matrix multiplication
-void matmul_cpu(float *A, float *B, float *C, int n) {
-    for (int i = 0; i < n; i++) {
+void matmul_cpu(float *A, float *B, float *C, int m, int k, int n) {
+    for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             float sum = 0.0f;
-            for (int k = 0; k < n; k++) {
-                sum += A[i * n + k] * B[k * n + j];
+            for (int l = 0; l < k; l++) {
+                sum += A[i * k + l] * B[l * n + j];
             }
             C[i * n + j] = sum;
         }
@@ -20,22 +39,22 @@ void matmul_cpu(float *A, float *B, float *C, int n) {
 }
 
 // CUDA kernel for matrix multiplication
-__global__ void matmul_gpu(float *A, float *B, float *C, int n) {
+__global__ void matmul_gpu(float *A, float *B, float *C, int m, int k, int n) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-    if (row < n && col < n) {
+    if (row < m && col < n) {
         float sum = 0.0f;
-        for (int k = 0; k < n; k++) {
-            sum += A[row * n + k] * B[k * n + col];
+        for (int l = 0; l < k; l++) {
+            sum += A[row * k + l] * B[l * n + col];
         }
         C[row * n + col] = sum;
     }
 }
 
 // Initialize matrix with random values
-void init_matrix(float *mat, int n) {
-    for (int i = 0; i < n * n; i++) {
+void init_matrix(float *mat, int rows, int cols) {
+    for (int i = 0; i < rows * cols; i++) {
         mat[i] = (float)rand() / RAND_MAX;
     }
 }
@@ -50,37 +69,39 @@ double get_time() {
 int main() {
     float *h_A, *h_B, *h_C_cpu, *h_C_gpu;
     float *d_A, *d_B, *d_C;
-    int size = N * N * sizeof(float);
+    int size_A = M * K * sizeof(float);
+    int size_B = K * N * sizeof(float);
+    int size_C = M * N * sizeof(float);
 
     // Allocate host memory
-    h_A = (float*)malloc(size);
-    h_B = (float*)malloc(size);
-    h_C_cpu = (float*)malloc(size);
-    h_C_gpu = (float*)malloc(size);
+    h_A = (float*)malloc(size_A);
+    h_B = (float*)malloc(size_B);
+    h_C_cpu = (float*)malloc(size_C);
+    h_C_gpu = (float*)malloc(size_C);
 
     // Initialize matrices
     srand(time(NULL));
-    init_matrix(h_A, N);
-    init_matrix(h_B, N);
+    init_matrix(h_A, M, K);
+    init_matrix(h_B, K, N);
 
     // Allocate device memory
-    cudaMalloc(&d_A, size);
-    cudaMalloc(&d_B, size);
-    cudaMalloc(&d_C, size);
+    cudaMalloc(&d_A, size_A);
+    cudaMalloc(&d_B, size_B);
+    cudaMalloc(&d_C, size_C);
 
     // Copy data to device
-    cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_A, h_A, size_A, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_B, h_B, size_B, cudaMemcpyHostToDevice);
 
     // Define grid and block dimensions
     dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE);
-    dim3 gridDim((N + BLOCK_SIZE - 1) / BLOCK_SIZE, (N + BLOCK_SIZE - 1) / BLOCK_SIZE);
+    dim3 gridDim((N + BLOCK_SIZE - 1) / BLOCK_SIZE, (M + BLOCK_SIZE - 1) / BLOCK_SIZE);
 
     // Warm-up runs
     printf("Performing warm-up runs...\n");
     for (int i = 0; i < 3; i++) {
-        matmul_cpu(h_A, h_B, h_C_cpu, N);
-        matmul_gpu<<<gridDim, blockDim>>>(d_A, d_B, d_C, N);
+        matmul_cpu(h_A, h_B, h_C_cpu, M, K, N);
+        matmul_gpu<<<gridDim, blockDim>>>(d_A, d_B, d_C, M, K, N);
         cudaDeviceSynchronize();
     }
 
@@ -89,7 +110,7 @@ int main() {
     double cpu_total_time = 0.0;
     for (int i = 0; i < 20; i++) {
         double start_time = get_time();
-        matmul_cpu(h_A, h_B, h_C_cpu, N);
+        matmul_cpu(h_A, h_B, h_C_cpu, M, K, N);
         double end_time = get_time();
         cpu_total_time += end_time - start_time;
     }
@@ -100,7 +121,7 @@ int main() {
     double gpu_total_time = 0.0;
     for (int i = 0; i < 20; i++) {
         double start_time = get_time();
-        matmul_gpu<<<gridDim, blockDim>>>(d_A, d_B, d_C, N);
+        matmul_gpu<<<gridDim, blockDim>>>(d_A, d_B, d_C, M, K, N);
         cudaDeviceSynchronize();
         double end_time = get_time();
         gpu_total_time += end_time - start_time;

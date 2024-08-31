@@ -15,16 +15,26 @@ def add_kernel(x_ptr,  # *Pointer* to first input vector.
                ):
     # There are multiple 'programs' processing different data. We identify which program
     # we are here:
-    pid = tl.program_id(axis=0)  # We use a 1D launch grid so axis is 0.
+    pid = tl.program_id(axis=0)  # We use a 1D launch grid so axis is 0. same as cuda blockIdx.x
+
     # This program will process inputs that are offset from the initial data.
     # For instance, if you had a vector of length 256 and block_size of 64, the programs
     # would each access the elements [0:64, 64:128, 128:192, 192:256].
     # Note that offsets is a list of pointers:
-    block_start = pid * BLOCK_SIZE
-    offsets = block_start + tl.arange(0, BLOCK_SIZE)
+    block_start = pid * BLOCK_SIZE # which block in the grid?
+    offsets = block_start + tl.arange(0, BLOCK_SIZE) # which elements in the block?
+
     # Create a mask to guard memory operations against out-of-bounds accesses.
-    mask = offsets < n_elements
-    # Load x and y from DRAM, masking out any extra elements in case the input is not a
+    mask = offsets < n_elements # which elements are in bounds?
+    # same as if statement in cuda kernel:
+    # __global__ void add_kernel(float* x, float* y, float* output, int n) {
+    #     int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    #     if (idx < n) {
+    #         output[idx] = x[idx] + y[idx];
+    #     }
+    # }
+
+    # # Load x and y from DRAM, masking out any extra elements in case the input is not a
     # multiple of the block size.
     x = tl.load(x_ptr + offsets, mask=mask)
     y = tl.load(y_ptr + offsets, mask=mask)

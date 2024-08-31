@@ -56,6 +56,7 @@ __device__ int softwareAtomicAdd(int* address, int increment) {
 }
 ```
 
+
 - Mutual Exclusion ⇒ https://www.youtube.com/watch?v=MqnpIwN7dz0&t
 - "Mutual":
     - Implies a reciprocal or shared relationship between entities (in this case, threads or processes).
@@ -63,6 +64,7 @@ __device__ int softwareAtomicAdd(int* address, int increment) {
 - "Exclusion":
     - Refers to the act of keeping something out or preventing access.
     - In this context, it means preventing simultaneous access to a resource.
+
 
 ```cpp
 #include <cuda_runtime.h>

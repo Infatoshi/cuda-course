@@ -1,4 +1,4 @@
-## GDB Debugger for C/C++
+## GDB Debugger for C/C++ (not covered in video lectures)
 
 > Install -> `sudo apt install gdb`
 
@@ -20,3 +20,5 @@ Watch: https://www.youtube.com/watch?v=Dq8l1_-QgAc
 - quit or q: Exits gdb.
 - clear: Removes all breakpoints.
 - continue or c: Continues the execution of the program until the next breakpoint.
+
+> Its worth noting that gdb is used for debugging C/C++ programs, whereas cuda-gdb is used for debugging CUDA programs.

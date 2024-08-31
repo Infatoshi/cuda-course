@@ -8,8 +8,8 @@ def softmax_kernel(
     BLOCK_SIZE: tl.constexpr,
 ):
     # Get the program ID
-    row_idx = tl.program_id(0)
-    
+    row_idx = tl.program_id(axis=0)
+
     # Compute the memory offsets for this row
     row_start_ptr = input_ptr + row_idx * input_row_stride
     out_row_start_ptr = output_ptr + row_idx * output_row_stride
@@ -38,7 +38,7 @@ def triton_softmax(x):
     
     # Determine the block size
     BLOCK_SIZE = triton.next_power_of_2(n_cols)
-    BLOCK_SIZE = min(BLOCK_SIZE, 1024)  # Limit to 1024 due to hardware constraints
+    BLOCK_SIZE = min(BLOCK_SIZE, 1024)  
     
     # Launch the Triton kernel
     grid = (n_rows,)
@@ -51,7 +51,7 @@ def triton_softmax(x):
 
 # Set up the input tensor
 torch.manual_seed(0)
-x = torch.randn(10, 1000, device='cuda')
+x = torch.randn(256, 1024, device='cuda')
 # x = torch.tensor([[1.0, 2.0, 3.0]], device='cuda')
 # Compute softmax using PyTorch
 torch_result = torch.softmax(x, dim=1)

@@ -5,8 +5,8 @@ import torch.nn.functional as F
 width = 4
 height = 4
 kernel_size = 3
-in_channels = 2
-out_channels = 2
+in_channels = 1
+out_channels = 1
 batch_size = 1
 
 # Define the input tensor
@@ -28,22 +28,6 @@ input_values = torch.tensor(
         14,
         15,
         16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
     ],
     dtype=torch.float32,
 ).reshape(batch_size, in_channels, height, width)
@@ -60,33 +44,6 @@ kernel_values = torch.tensor(
         7,
         8,
         9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
     ],
     dtype=torch.float32,
 ).reshape(out_channels, in_channels, kernel_size, kernel_size)

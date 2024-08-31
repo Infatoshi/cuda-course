@@ -6,6 +6,11 @@
 #define N 10000000  // Vector size = 10 million
 #define BLOCK_SIZE 256
 
+// Example:
+// A = [1, 2, 3, 4, 5]
+// B = [6, 7, 8, 9, 10]
+// C = A + B = [7, 9, 11, 13, 15]
+
 // CPU vector addition
 void vector_add_cpu(float *a, float *b, float *c, int n) {
     for (int i = 0; i < n; i++) {
@@ -62,6 +67,8 @@ int main() {
 
     // Define grid and block dimensions
     int num_blocks = (N + BLOCK_SIZE - 1) / BLOCK_SIZE;
+    // N = 1024, BLOCK_SIZE = 256, num_blocks = 4
+    // (N + BLOCK_SIZE - 1) / BLOCK_SIZE = ( (1025 + 256 - 1) / 256 ) = 1280 / 256 = 4 rounded 
 
     // Warm-up runs
     printf("Performing warm-up runs...\n");

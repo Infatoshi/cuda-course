@@ -26,7 +26,7 @@
 }
 
 const int M = 4096;
-const int K = 4096;
+const int K = 1024;
 const int N = 4096;
 
 // Naive CUDA kernel for matrix multiplication
@@ -191,9 +191,9 @@ int main() {
     cublasLtMatmulDesc_t operationDesc_half = nullptr;
     cublasLtMatrixLayout_t Adesc_half = nullptr, Bdesc_half = nullptr, Cdesc_half = nullptr;
     CHECK_CUBLAS(cublasLtMatmulDescCreate(&operationDesc_half, CUBLAS_COMPUTE_16F, CUDA_R_16F));
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&Adesc_half, CUDA_R_16F, K, M, K)); // original M K M
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&Bdesc_half, CUDA_R_16F, N, K, N)); // original K N K
-    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&Cdesc_half, CUDA_R_16F, N, M, N)); // original M N M
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&Adesc_half, CUDA_R_16F, K, M, K)); 
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&Bdesc_half, CUDA_R_16F, N, K, N)); 
+    CHECK_CUBLAS(cublasLtMatrixLayoutCreate(&Cdesc_half, CUDA_R_16F, N, M, N)); 
 
     float cublasLt_fp16_time = benchmark_kernel([&]() {
         CHECK_CUBLAS(cublasLtMatmul(cublasLt_handle, operationDesc_half, &alpha_half, d_B_half, Bdesc_half, d_A_half, Adesc_half, &beta_half, d_C_half, Cdesc_half, d_C_half, Cdesc_half, nullptr, nullptr, 0, 0));

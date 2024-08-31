@@ -38,12 +38,12 @@ __global__ void naiveConv2d(float* input, float* kernel, float* output, int widt
 
 int main() {
     // Smaller, predefined sizes for human-readable output
-    const int width = 4;
-    const int height = 4;
-    const int kernelSize = 3;
-    const int inChannels = 1;
-    const int outChannels = 1;
-    const int batchSize = 1;
+    const int width = 224;
+    const int height = 224;
+    const int kernelSize = 11;
+    const int inChannels = 32;
+    const int outChannels = 64;
+    const int batchSize = 4;
     const int inputSize = width * height * inChannels * batchSize;
     const int outputSize = width * height * outChannels * batchSize;
     const int kernelElements = kernelSize * kernelSize * inChannels * outChannels;
@@ -58,23 +58,14 @@ int main() {
     float* h_output_cudnn = (float*)malloc(outputSize * sizeof(float));
     float* h_output_naive = (float*)malloc(outputSize * sizeof(float));
 
-    // Initialize input and kernel with predefined values
-    float input_values[] = {
-        1, 2, 3, 4,
-        5, 6, 7, 8,
-        9, 10, 11, 12,
-        13, 14, 15, 16,
-        
-    };
-    
-    float kernel_values[] = {
-        1, 2, 3,
-        4, 5, 6,
-        7, 8, 9,
-    };
-
-    memcpy(h_input, input_values, inputSize * sizeof(float));
-    memcpy(h_kernel, kernel_values, kernelElements * sizeof(float));
+    // Initialize input and kernel with random values
+    srand(time(NULL));
+    for (int i = 0; i < inputSize; i++) {
+        h_input[i] = static_cast<float>(rand()) / RAND_MAX;
+    }
+    for (int i = 0; i < kernelElements; i++) {
+        h_kernel[i] = static_cast<float>(rand()) / RAND_MAX;
+    }
 
     // Allocate device memory
     float *d_input, *d_kernel, *d_output_cudnn, *d_output_naive;
@@ -112,14 +103,8 @@ int main() {
     CHECK_CUDNN(cudnnGetConvolutionForwardAlgorithm_v7(cudnn, inputDesc, kernelDesc, convDesc, outputDesc,
                                                        requestedAlgoCount, &returnedAlgoCount, perfResults));
 
-    cudnnConvolutionFwdAlgo_t algo = perfResults[0].algo;
-    for (int i = 1; i < returnedAlgoCount; i++) {
-        std::cout << "Algorithm: " << perfResults[i].algo << " Time: " << perfResults[i].time << std::endl;
-        if (perfResults[i].status == CUDNN_STATUS_SUCCESS && perfResults[i].time < perfResults[0].time) {
-            algo = perfResults[i].algo;
-        }
-    }
-    std::cout << "Selected algorithm: " << algo << std::endl;   
+    cudnnConvolutionFwdAlgo_t algo = CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM; // Default algorithm
+
     size_t workspaceSize;
     CHECK_CUDNN(cudnnGetConvolutionForwardWorkspaceSize(cudnn, inputDesc, kernelDesc, convDesc, outputDesc, algo, &workspaceSize));
 
@@ -193,44 +178,6 @@ int main() {
 
     printf("Max difference between cuDNN and naive kernel: %e\n", maxDiff);
 
-    // Print the output
-    printf("\ncuDNN Output:\n");
-    for (int b = 0; b < batchSize; b++) {
-        for (int c = 0; c < outChannels; c++) {
-            printf("Channel %d:\n", c);
-            for (int h = 0; h < height; h++) {
-                for (int w = 0; w < width; w++) {
-                    int idx = ((b * outChannels + c) * height + h) * width + w;
-                    printf("%f ", h_output_cudnn[idx]);
-                }
-                printf("\n");
-            }
-            printf("\n");
-        }
-    }
-
-    printf("\nNaive Kernel Output:\n");
-    for (int b = 0; b < batchSize; b++) {
-        for (int c = 0; c < outChannels; c++) {
-            printf("Channel %d:\n", c);
-            for (int h = 0; h < height; h++) {
-                for (int w = 0; w < width; w++) {
-                    int idx = ((b * outChannels + c) * height + h) * width + w;
-                    printf("%f ", h_output_naive[idx]);
-                }
-                printf("\n");
-            }
-            printf("\n");
-        }
-    }
-
-    // Print flattened output for easier comparison with PyTorch
-    printf("\nFlattened cuDNN Output:\n");
-    for (int i = 0; i < outputSize; i++) {
-        printf("%f", h_output_cudnn[i]);
-        if (i < outputSize - 1) printf(", ");
-    }
-    printf("\n");
 
     // Clean up
     CHECK_CUDNN(cudnnDestroyTensorDescriptor(inputDesc));

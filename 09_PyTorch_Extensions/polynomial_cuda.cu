@@ -11,7 +11,7 @@ __global__ void polynomial_activation_kernel(
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < size) {
         scalar_t val = x[idx];
-        output[idx] = val * val + val + 1;
+        output[idx] = val * val + val + 1; // x^2 + x + 1
     }
 }
 
@@ -29,4 +29,8 @@ torch::Tensor polynomial_activation_cuda(torch::Tensor x) {
     }));
 
     return output;
+}
+
+PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
+    m.def("polynomial_activation", &polynomial_activation_cuda, "Polynomial activation (CUDA)");
 }

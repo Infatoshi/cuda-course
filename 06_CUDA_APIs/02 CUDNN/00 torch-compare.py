@@ -60,7 +60,7 @@ def main():
     print(f"Using device: {device}")
 
     # Generate input data
-    input_tensor = torch.rand(BATCH_SIZE, N, device=device) * 2 - 1  # Random values between -1 and 1
+    input_tensor = torch.rand((128, 32, 224, 224), device=device) * 2 - 1  # Random values between -1 and 1
 
     # Warm up GPU
     _ = torch.tanh(input_tensor)
