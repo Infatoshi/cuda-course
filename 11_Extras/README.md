@@ -31,3 +31,16 @@
 - 6T vs 8T SRAM cells in NVIDIA GPUs across different architectures and compute capabilities isn't publicly disclosed in detail. NVIDIA, like most semiconductor companies, keeps many of these low-level design choices proprietary.
 - ![](assets/sram-cell.png)
 - ![](assets/8t-sram-cell.png)
+
+
+## Dive deeper
+- quantization -> fp32 -> fp16 -> int8
+- tensor cores (wmma)
+- sparsity -> [0, 0, 0, 0, -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6]
+- [CUDA by Example](https://edoras.sdsu.edu/~mthomas/docs/cuda/cuda_by_example.book.pdf)
+- [Data-Parallel Distributed Training of Deep Learning Models](https://siboehm.com/articles/22/data-parallel-training)
+- [mnist-cudnn](https://github.com/haanjack/mnist-cudnn)
+- [CUDA MODE](https://github.com/cuda-mode/lectures)
+- [micrograd-cuda](https://github.com/mlecauchois/micrograd-cuda)
+- [micrograd](https://github.com/karpathy/micrograd)
+- [GPU puzzles](https://github.com/srush/GPU-Puzzles)

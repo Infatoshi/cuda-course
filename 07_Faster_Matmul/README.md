@@ -1,5 +1,7 @@
 # Lets Optimize Matrix Multiplication
+
 ![](assets/comparison.png)
+
 > Naive (easiest to understand but poor performance)
 > Coalesced Memory Access (ensuring we load data in a way that is optimal for the GPU)
 > Shared Memory (reducing the number of global memory accesses increases memory bandwidth)
@@ -11,6 +13,7 @@
 **I was too lazy to write this so lets jump over to Simon Boehm's [blog](https://siboehm.com/articles/22/CUDA-MMM) & [git repo](https://github.com/siboehm/SGEMM_CUDA)**
 
 ## Row Major vs Column Major
+
 - cuBLAS expects matrices to be in column major format so we have to transpose beforehand
 - Row Major: `A[i][j]` is stored in `A[i * N + j]`
 - Column Major: `A[i][j]` is stored in `A[j * M + i]`
@@ -62,14 +65,14 @@ A = [1, 4, 7, 2, 5, 8, 3, 6, 9]
 - allows us to understand the operations we are bound by (ex: warp divergence, waiting for data to arrive in registers, time expensive operations, etc)
 - allows for clock-cycle optimization (closest to the bare metal you can get)
 
-
 ## Inspired by:
+
 1. [Simon Boehm @ Anthropic](https://siboehm.com/articles/22/CUDA-MMM)
 2. [Lei Mao @ NVIDIA](https://github.com/leimao/CUDA-GEMM-Optimization)
 
 ## Take it a step further:
+
 - To understand the kernel performance optimizations that companies like NVIDIA apply to the **matmul** in order to achieve high TFLOP counts seen in cuBLAS, check out cuTLASS (CUDA Templates for Linear Algebra Subroutines):
 - [CUTLASS Github](https://github.com/NVIDIA/cutlass)
-- [CUTLASS Blog](https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/) 
+- [CUTLASS Blog](https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/)
 - [CUTLASS Documentation](https://nvidia.github.io/cutlass/)
- 
