@@ -78,8 +78,7 @@ int blockDim = 32; // 32 threads per block
   - no branch prediction
   - significantly less control than CPU architecture gives us more room for more CORES
 
-> Later on in the course (matmul optimization chapter), we will come back to optimzations connected to these special warp ops.
-> ![Warp Level Primitives](https://developer.nvidia.com/blog/using-cuda-warp-level-primitives/)
+> Later on in the course (matmul optimization chapter), we will come back to optimzations connected to these special warp ops. [Warp Level Primitives](https://developer.nvidia.com/blog/using-cuda-warp-level-primitives/)
 
 - https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#thread-hierarchy tells us "There is a limit to the number of threads per block, since all threads of a block are expected to reside on the same streaming multiprocessor core and must share the limited memory resources of that core. On current GPUs, a thread block may contain up to 1024 threads.", indicating 1024 threads per block, 32 threads per warp, and 32 warps per block is our theoretical limit.
 
