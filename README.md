@@ -68,7 +68,7 @@ This course aims to:
 - NVIDIA Developer Forums
 - NVIDIA and PyTorch documentation
 - LLMs for navigating the space
-
+- Cheatsheet [here](/11_Extras/assets/cheatsheet.md)
 ## Other Learning Material
 
 - https://github.com/CoffeeBeforeArch/cuda_programming
