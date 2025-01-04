@@ -72,8 +72,8 @@ This course aims to:
 ## Other Learning Material
 
 - https://github.com/CoffeeBeforeArch/cuda_programming
-- https://www.youtube.com/@CUDAMODE
-- https://discord.com/invite/cudamode
+- https://www.youtube.com/@GPUMODE
+- https://discord.com/invite/gpumode
 
 ## Fun YouTube Videos:
 - [How do GPUs works? Exploring GPU Architecture](https://www.youtube.com/watch?v=h9Z4oGN89MU)
