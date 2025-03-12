@@ -124,7 +124,7 @@ cudaMemcpy(device_array, host_array, size * sizeof(int), cudaMemcpyHostToDevice)
 
 #### cudaDeviceSynchronize()
 
-By Defaukt CPU and GPU work together to minimise time but sometimes we need to make CPU wait until all GPU operations are complete. there we use `cudaDeviceSynchronize()`.
+By default, CPU and GPU work together to minimise time but sometimes we need to make CPU wait until all GPU operations are complete. there we use `cudaDeviceSynchronize()`.
 
 - Useful when you need results before continuing
 - We will use it while performing benchmarks
