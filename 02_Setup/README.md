@@ -26,3 +26,5 @@ do `source ~/.zshrc` or `source ~/.bashrc` after this then try `nvcc -V` again
 ## Alternatively
 
 - run the shell script in this directory: `./cuda-installer.sh`
+
+## For [WSL2](https://medium.com/@omkarpast/technical-documentation-for-clean-installation-of-ubuntu-cuda-cudnn-and-pytorch-on-wsl2-9b265a4b8821)
