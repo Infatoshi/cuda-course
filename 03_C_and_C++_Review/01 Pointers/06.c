@@ -11,7 +11,7 @@ int main() {
 
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 4; j++) {
-            printf("%d ", *matrix[i]++);
+            printf("%d ", *(matrix[i] + j));
         }
         printf("\n");
     }
