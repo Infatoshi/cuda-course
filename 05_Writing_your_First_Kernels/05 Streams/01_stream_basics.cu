@@ -48,6 +48,9 @@ int main(void) {
     // Copy inputs to device asynchronously
     CHECK_CUDA_ERROR(cudaMemcpyAsync(d_A, h_A, size, cudaMemcpyHostToDevice, stream1));
     CHECK_CUDA_ERROR(cudaMemcpyAsync(d_B, h_B, size, cudaMemcpyHostToDevice, stream2));
+    
+    // make sure d_B is copied before launching kernel that uses it
+    CHECK_CUDA_ERROR(cudaStreamSynchronize(stream2));
 
     // Launch kernels
     int threadsPerBlock = 256;
