@@ -91,7 +91,7 @@ As we mine further into detail, I encourage you to research and play around with
         - No need for error checking / macros `CUDA_CHECK_ERROR`
         - Reduced complexity when grid / block / thread level indexing on kernel launch parameters
     
-![](../05%20Writing%20your%20First%20Kernels/assets/triton1.png)
+![](../05_Writing_your_First_Kernels/assets/triton1.png)
     
 - torch.compile
     - Gets more attention than TorchScript and is typically better performance
@@ -203,7 +203,7 @@ As we mine further into detail, I encourage you to research and play around with
     - Nvidia CUDA Compiler
     - Works on everything in the CUDA toolkit
     
-    ![Untitled](../10%20Extras/assets/nvcc.png)
+    ![Untitled](../11_Extras/assets/nvcc.png)
         
 ## Misc
 - Huggingface
