@@ -74,25 +74,21 @@ As we mine further into detail, I encourage you to research and play around with
             - https://nvidia.github.io/TensorRT-LLM/quick-start-guide.html
             - https://pytorch.org/TensorRT/getting_started/installation.html#installation
         - 
-- Triton
+- Triton (language and compiler)
     - Developed and maintained by OpenAI ⇒ https://openai.com/index/triton/
-    - ‣
     - CUDA-like, but in python and gets rid of clutter around kernel development in regular CUDA C/C++. Also matches record performance on Matrix Multiplication
     - Get started ⇒ https://triton-lang.org/main/index.html
     - Write your first Triton kernel ⇒ https://triton-lang.org/main/getting-started/tutorials/index.html
-    - Triton Inference Server
-        - https://developer.nvidia.com/triton-inference-server
-        - ‣
-        - 
     - https://www.eecs.harvard.edu/~htk/publication/2019-mapl-tillet-kung-cox.pdf is the original Triton paper
     - triton-viz is Triton’s main profiling and visualization toolkit
     - Python to finely control what happens on the GPU without worrying about the unexpected intricacies and complexities in C/C++.
         - Removes explicit memory management `cudaMalloc`, `cudaMemcpy`, `cudaFree`
         - No need for error checking / macros `CUDA_CHECK_ERROR`
         - Reduced complexity when grid / block / thread level indexing on kernel launch parameters
-    
-![](../05%20Writing%20your%20First%20Kernels/assets/triton1.png)
-    
+- Triton Inference Server 
+    - developed and maintained by Nvidia ⇒ https://developer.nvidia.com/triton-inference-server
+    - open-source inference-serving software for fast and scalable AI in applications 
+    - unrelated to Triton language
 - torch.compile
     - Gets more attention than TorchScript and is typically better performance
     - Compiles a model down to a static representation so the dynamic graph component of pytorch doesn’t have to worry about things changing. Runs the model as an optimized binary instead of default out-of-the-box pytorch
