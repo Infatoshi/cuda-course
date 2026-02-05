@@ -1,0 +1,9 @@
+# Compiled binaries
+compare
+*.o
+*.out
+*.exe
+
+# Python cache
+__pycache__/
+*.pyc
