@@ -101,6 +101,6 @@ CUDA program surface level runtime:
 > why not just use only threads instead of blocks and threads? add to this given our knowledge of how warps group and execute a batch of 32 threads in lockstep
 > Logically, this shared memory is partitioned among the blocks. This means that a thread can communicate with the other threads in its block via the shared memory chunk. 
 
-- CUDA parallelism is scalable because their aren’t sequential block run-time dependencies.What I mean here is that you may not run Block 0 & Block 1, then Block 2 & 3… It may be Block 3 & 0, then Block 6 & 1. This means each of these mini “jobs” are solving a subset of the problem independent of the others. Like one piece of the puzzle. As long as all the pieces are assembled in the right place at the end, it works!
+- CUDA parallelism is scalable because there aren’t sequential block run-time dependencies.What I mean here is that you may not run Block 0 & Block 1, then Block 2 & 3… It may be Block 3 & 0, then Block 6 & 1. This means each of these mini “jobs” are solving a subset of the problem independent of the others. Like one piece of the puzzle. As long as all the pieces are assembled in the right place at the end, it works!
 
 > [How do threads map onto CUDA cores?](https://stackoverflow.com/questions/10460742/how-do-cuda-blocks-warps-threads-map-onto-cuda-cores)
