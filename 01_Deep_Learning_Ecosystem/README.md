@@ -199,7 +199,7 @@ As we mine further into detail, I encourage you to research and play around with
     - Nvidia CUDA Compiler
     - Works on everything in the CUDA toolkit
     
-    ![Untitled](../10%20Extras/assets/nvcc.png)
+    ![Untitled](../11_Extras/assets/nvcc.png)
         
 ## Misc
 - Huggingface
