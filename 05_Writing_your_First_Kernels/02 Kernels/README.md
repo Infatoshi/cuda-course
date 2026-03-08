@@ -2,7 +2,7 @@
 
 ## Kernel Launch Params
 
-- Type `dim3` is 3D type for grids and thread blocks which are later feed into the kernel launch configuration.
+- Type `dim3` is 3D type for grids and thread blocks which are later fed into the kernel launch configuration.
 
 - allows for indexing of elements as vector, matrix, or volume (tensor)
 
