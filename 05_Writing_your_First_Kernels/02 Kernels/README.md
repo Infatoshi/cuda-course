@@ -45,7 +45,7 @@ int blockDim = 32; // 32 threads per block
 
 - why do we even need to synchronize threads? because threads are asynchronous and can be executed in any order. if you have a thread that is dependent on another thread, you need to make sure that the thread that is dependent on the other thread is not executed before the other thread is done.
 
-- For example, if we want to vector add the two arrays `a = [1, 2, 3, 4]`, `b = [5, 6, 7, 8]` and store the result in `c`, then add 1 to each element in `c`, we need to ensure all the multiply operations catch up before moving onto adding (following PEDMAS). If we don't sync threads here, there is a possibility that we may get an incorrect output vector where a 1 is added before a multiply.
+- For example, if we want to vector multiply the two arrays `a = [1, 2, 3, 4]`, `b = [5, 6, 7, 8]` and store the result in `c`, then add 1 to each element in `c`, we need to ensure all the multiply operations catch up before moving onto adding (following PEDMAS). If we don't sync threads here, there is a possibility that we may get an incorrect output vector where a 1 is added before a multiply.
 
 - A more clear but less common example would be when we parallelize a bit shift. If we have a bit shift operation that is dependent on the previous bit shift operation, we need to make sure that the previous bit shift operation is done before we move onto the next one.
   ![](../assets/bitshift1.png)
