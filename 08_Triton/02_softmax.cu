@@ -9,7 +9,7 @@ __global__ void softmax_cuda(float* input, float* output, int B, int N) {
     
     if (tid < N && bid < B) {
         int offset = bid * N;
-        float max_val = input[offset + tid];
+        float max_val = input[offset];
         for (int i = 1; i < N; i++) {
             max_val = max(max_val, input[offset + i]);
         }
